@@ -1,6 +1,7 @@
 package com.gastbob40.domain.service;
 
 import com.gastbob40.domain.entity.BoardEntity;
+import com.gastbob40.domain.entity.CommandEntity;
 import com.gastbob40.domain.entity.RoverEntity;
 import com.gastbob40.utils.Assertions;
 import lombok.val;
@@ -8,6 +9,9 @@ import lombok.val;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.BadRequestException;
 import java.util.Arrays;
+import java.util.List;
+
+import static com.gastbob40.utils.Seq.seq;
 
 @ApplicationScoped
 public class RoverService {
@@ -29,7 +33,7 @@ public class RoverService {
 
         while (lines.size() > 0) {
             val rover = getRover(lines.get(0));
-            val commands = lines.get(1);
+            val commands = getCommands(lines.get(1));
             lines = lines.subList(2, lines.size());
         }
 
@@ -73,6 +77,18 @@ public class RoverService {
             return new RoverEntity(x, y, orientation);
         } catch (IllegalArgumentException e) {
             throw new BadRequestException("Invalid rover position or orientation");
+        }
+    }
+
+    // LMLMLMLMM
+    public List<CommandEntity> getCommands(String line) {
+        Assertions.assertNotNull(line).orElseThrow(BadRequestException::new);
+
+        try {
+            val chars = line.chars().mapToObj(c -> (char) c).toList();
+            return seq(chars).map(Object::toString).map(CommandEntity::valueOf).toList();
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Invalid command");
         }
     }
 }

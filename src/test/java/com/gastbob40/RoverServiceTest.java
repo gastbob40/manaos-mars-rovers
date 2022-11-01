@@ -1,5 +1,6 @@
 package com.gastbob40;
 
+import com.gastbob40.domain.entity.CommandEntity;
 import com.gastbob40.domain.entity.RoverEntity;
 import com.gastbob40.domain.service.RoverService;
 import io.quarkus.test.junit.QuarkusTest;
@@ -80,5 +81,28 @@ public class RoverServiceTest {
         assertEquals(1, rover.getPosX());
         assertEquals(2, rover.getPosY());
         assertEquals(RoverEntity.Orientation.N, rover.getOrientation());
+    }
+
+    @Test
+    public void testCommandsNull() {
+        assertThrows(RuntimeException.class, () -> roverService.getCommands(null));
+    }
+
+    @Test
+    public void testMalformedCommands() {
+        assertThrows(RuntimeException.class, () -> roverService.getCommands("LMRA"));
+    }
+
+    @Test
+    public void testNotCommandCommands() {
+        assertThrows(RuntimeException.class, () -> roverService.getCommands("L M R"));
+    }
+
+    @Test void testValidCommands() {
+        val commands = roverService.getCommands("LMR");
+        assertEquals(3, commands.size());
+        assertEquals(CommandEntity.L, commands.get(0));
+        assertEquals(CommandEntity.M, commands.get(1));
+        assertEquals(CommandEntity.R, commands.get(2));
     }
 }
