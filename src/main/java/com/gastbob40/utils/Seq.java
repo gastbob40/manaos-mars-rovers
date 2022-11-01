@@ -50,11 +50,11 @@ public interface Seq<ELEMENT_T> extends Stream<ELEMENT_T>, Iterable<ELEMENT_T> {
         return Seq.of(values);
     }
 
-    static <ELEMENT_TYPE> Seq<ELEMENT_TYPE> seq(final Collection<ELEMENT_TYPE> values) { return Seq.of(values); }
+    static <ELEMENT_TYPE> Seq<ELEMENT_TYPE> seq(final Collection<ELEMENT_TYPE> values) {return Seq.of(values);}
 
-    static <ELEMENT_TYPE> Seq<ELEMENT_TYPE> seq(final Stream<ELEMENT_TYPE> values) { return Seq.of(values); }
+    static <ELEMENT_TYPE> Seq<ELEMENT_TYPE> seq(final Stream<ELEMENT_TYPE> values) {return Seq.of(values);}
 
-    static <ELEMENT_TYPE> Seq<ELEMENT_TYPE> seq(final Iterator<ELEMENT_TYPE> values) { return Seq.of(values); }
+    static <ELEMENT_TYPE> Seq<ELEMENT_TYPE> seq(final Iterator<ELEMENT_TYPE> values) {return Seq.of(values);}
 
     static <ELEMENT_TYPE> Seq<ELEMENT_TYPE> of(final Collection<ELEMENT_TYPE> values) {
         return values != null ? values::stream : Stream::empty;
@@ -65,7 +65,7 @@ public interface Seq<ELEMENT_T> extends Stream<ELEMENT_T>, Iterable<ELEMENT_T> {
     }
 
     static <ELEMENT_TYPE> Seq<ELEMENT_TYPE> of(final Iterator<ELEMENT_TYPE> values) {
-        if (values == null) { return Stream::empty; }
+        if (values == null) {return Stream::empty;}
         final Iterable<ELEMENT_TYPE> iterable = () -> values;
         return () -> StreamSupport.stream(iterable.spliterator(), false);
     }
@@ -446,8 +446,8 @@ public interface Seq<ELEMENT_T> extends Stream<ELEMENT_T>, Iterable<ELEMENT_T> {
     }
 
     /**
-     * Creates a stream of pairs of the content of the stream and values produces by an other stream. Once any of the two streams is close, the produced stream is complete, regardless of potential
-     * values remaining in the other stream.
+     * Creates a stream of pairs of the content of the stream and values produces by an other stream. Once any of the two streams is close, the produced stream is complete,
+     * regardless of potential values remaining in the other stream.
      *
      * @param supplier
      *         the value supplier.

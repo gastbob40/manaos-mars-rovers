@@ -1,6 +1,7 @@
 package com.gastbob40.presentation.rest;
 
 import com.gastbob40.domain.service.RoverService;
+import com.gastbob40.utils.Logged;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
@@ -16,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.TEXT_PLAIN)
 @Produces(MediaType.TEXT_PLAIN)
 
-public class RoverResource {
+public class RoverResource implements Logged {
     @Inject RoverService roverService;
 
     @POST @Path("/simulate")
@@ -30,6 +31,7 @@ public class RoverResource {
             @APIResponse(responseCode = "400", description = "Invalid input"),
     })
     public String simulateRovers(String request) {
+        logger().info("Simulating rovers request received");
         return roverService.simulate(request);
     }
 }

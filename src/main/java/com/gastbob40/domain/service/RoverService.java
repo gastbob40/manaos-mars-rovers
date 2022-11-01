@@ -4,6 +4,7 @@ import com.gastbob40.domain.entity.BoardEntity;
 import com.gastbob40.domain.entity.CommandEntity;
 import com.gastbob40.domain.entity.RoverEntity;
 import com.gastbob40.utils.Assertions;
+import com.gastbob40.utils.Logged;
 import lombok.val;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -14,11 +15,9 @@ import java.util.List;
 import static com.gastbob40.utils.Seq.seq;
 
 @ApplicationScoped
-public class RoverService {
+public class RoverService implements Logged {
     public String simulate(String input) {
-        if (input == null || input.length() == 0) {
-            throw new BadRequestException("Input is empty");
-        }
+        Assertions.assertThat(input != null && input.length() != 0).orElseThrow(() -> new BadRequestException("Input cannot be empty"));
 
         var lines = Arrays.asList(input.split(System.lineSeparator()));
         Assertions.assertNotEmpty(lines).orElseThrow(BadRequestException::new);
@@ -44,7 +43,10 @@ public class RoverService {
 
     /**
      * Get a board from input
-     * @param line Example format 1 2
+     *
+     * @param line
+     *         Example format 1 2
+     *
      * @return A new board
      */
     public BoardEntity getBoard(String line) {
@@ -60,15 +62,20 @@ public class RoverService {
             Assertions.assertThat(width > 0).orElseThrow(BadRequestException::new);
             Assertions.assertThat(height > 0).orElseThrow(BadRequestException::new);
 
+            logger().info("Board created: {}x{}", width, height);
             return new BoardEntity(width, height);
         } catch (NumberFormatException e) {
+            logger().error("Invalid board input: {}", line);
             throw new BadRequestException("Invalid board size");
         }
     }
 
     /**
      * Get a rover from coordinates and orientation
-     * @param line Example format 1 2 N
+     *
+     * @param line
+     *         Example format 1 2 N
+     *
      * @return A new rover
      */
     public RoverEntity getRover(String line) {
@@ -85,15 +92,20 @@ public class RoverService {
             Assertions.assertThat(x >= 0).orElseThrow(BadRequestException::new);
             Assertions.assertThat(y >= 0).orElseThrow(BadRequestException::new);
 
+            logger().info("Rover created: {} {} {}", x, y, orientation);
             return new RoverEntity(x, y, orientation);
         } catch (IllegalArgumentException e) {
+            logger().error("Invalid rover input: {}", line);
             throw new BadRequestException("Invalid rover position or orientation");
         }
     }
 
     /**
      * Get the list of commands from a string
-     * @param line Example format LMLMLMLMM
+     *
+     * @param line
+     *         Example format LMLMLMLMM
+     *
      * @return A list of command
      */
     public List<CommandEntity> getCommands(String line) {
@@ -101,8 +113,12 @@ public class RoverService {
 
         try {
             val chars = line.chars().mapToObj(c -> (char) c).toList();
-            return seq(chars).map(Object::toString).map(CommandEntity::valueOf).toList();
+            val commands = seq(chars).map(Object::toString).map(CommandEntity::valueOf).toList();
+
+            logger().info("Commands created: {}", commands);
+            return commands;
         } catch (IllegalArgumentException e) {
+            logger().error("Invalid commands input: {}", line);
             throw new BadRequestException("Invalid command");
         }
     }

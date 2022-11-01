@@ -1,9 +1,9 @@
 package com.gastbob40.domain.entity;
 
 import com.gastbob40.utils.Assertions;
+import com.gastbob40.utils.Logged;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Value;
 import lombok.With;
 import lombok.val;
 
@@ -11,7 +11,7 @@ import javax.ws.rs.BadRequestException;
 import java.util.List;
 
 @With @AllArgsConstructor @Getter
-public class RoverEntity {
+public class RoverEntity implements Logged {
     int posX;
     int posY;
     Orientation orientation;
@@ -37,9 +37,11 @@ public class RoverEntity {
             case S -> posY--;
             case W -> posX--;
         }
+
+        logger().debug("Rover moved to {} {}", posX, posY);
     }
 
-    public enum Orientation {
+    public enum Orientation implements Logged {
         N(0), E(1), S(2), W(3);
 
         public final int value;
@@ -60,12 +62,18 @@ public class RoverEntity {
 
         // Calculate the new orientation using the value of the enum
         public Orientation turnLeft() {
-            return Orientation.fromValue((value - 1 + 4) % 4);
+            val orientation = Orientation.fromValue((value - 1 + 4) % 4);
+
+            logger().debug("Rover turned left from {} to {}", this, orientation);
+            return orientation;
         }
 
         // Calculate the new orientation using the value of the enum
         public Orientation turnRight() {
-            return Orientation.fromValue((value + 1) % 4);
+            val orientation = Orientation.fromValue((value + 1) % 4);
+
+            logger().debug("Rover turned right from {} to {}", this, orientation);
+            return orientation;
         }
     }
 }
