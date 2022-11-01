@@ -42,6 +42,11 @@ public class RoverService {
         return response.toString();
     }
 
+    /**
+     * Get a board from input
+     * @param line Example format 1 2
+     * @return A new board
+     */
     public BoardEntity getBoard(String line) {
         Assertions.assertNotNull(line).orElseThrow(BadRequestException::new);
 
@@ -61,7 +66,11 @@ public class RoverService {
         }
     }
 
-    // 1 2 N
+    /**
+     * Get a rover from coordinates and orientation
+     * @param line Example format 1 2 N
+     * @return A new rover
+     */
     public RoverEntity getRover(String line) {
         Assertions.assertNotNull(line).orElseThrow(BadRequestException::new);
 
@@ -82,7 +91,11 @@ public class RoverService {
         }
     }
 
-    // LMLMLMLMM
+    /**
+     * Get the list of commands from a string
+     * @param line Example format LMLMLMLMM
+     * @return A list of command
+     */
     public List<CommandEntity> getCommands(String line) {
         Assertions.assertNotNull(line).orElseThrow(BadRequestException::new);
 

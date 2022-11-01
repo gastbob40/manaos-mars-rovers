@@ -54,10 +54,12 @@ public class RoverEntity {
             throw new IllegalArgumentException("Invalid orientation value");
         }
 
+        // Calculate the new orientation using the value of the enum
         public Orientation turnLeft() {
             return Orientation.fromValue((value - 1 + 4) % 4);
         }
 
+        // Calculate the new orientation using the value of the enum
         public Orientation turnRight() {
             return Orientation.fromValue((value + 1) % 4);
         }
