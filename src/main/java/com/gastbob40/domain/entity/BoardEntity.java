@@ -7,4 +7,8 @@ import lombok.With;
 public class BoardEntity {
     int width;
     int height;
+
+    public boolean isInside(int posX, int posY) {
+        return posX >= 0 && posX <= width && posY >= 0 && posY <= height;
+    }
 }

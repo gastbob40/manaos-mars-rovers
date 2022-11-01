@@ -1,11 +1,13 @@
 package com.gastbob40.domain.entity;
 
+import com.gastbob40.utils.Assertions;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 import lombok.With;
 import lombok.val;
 
+import javax.ws.rs.BadRequestException;
 import java.util.List;
 
 @With @AllArgsConstructor @Getter
@@ -20,6 +22,10 @@ public class RoverEntity {
                 case L -> orientation = orientation.turnLeft();
                 case R -> orientation = orientation.turnRight();
                 case M -> move();
+            }
+
+            if (!board.isInside(posX, posY)) {
+                throw new BadRequestException("Rover is outside the board");
             }
         }
 
