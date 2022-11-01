@@ -2,9 +2,9 @@
 
 This project uses Quarkus as framework, and Java as programming language.
 
+A basic CI pipeline is provided, using GitHub Actions. It runs the tests and upload the code coverage to artifacts.
+
 # Usage
-
-
 
 ## Running the application in dev mode
 
