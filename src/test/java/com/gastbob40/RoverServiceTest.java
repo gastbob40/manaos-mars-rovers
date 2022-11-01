@@ -1,5 +1,6 @@
 package com.gastbob40;
 
+import com.gastbob40.domain.entity.RoverEntity;
 import com.gastbob40.domain.service.RoverService;
 import io.quarkus.test.junit.QuarkusTest;
 import lombok.val;
@@ -45,5 +46,39 @@ public class RoverServiceTest {
 
         assertEquals(5, board.getWidth());
         assertEquals(7, board.getHeight());
+    }
+
+    @Test
+    public void testRoverNull() {
+        assertThrows(RuntimeException.class, () -> roverService.getRover(null));
+    }
+
+    @Test
+    public void testMalformedRover() {
+        assertThrows(RuntimeException.class, () -> roverService.getRover("1 2"));
+    }
+
+    @Test
+    public void testNotNumberRover() {
+        assertThrows(RuntimeException.class, () -> roverService.getRover("1 A N"));
+    }
+
+    @Test
+    public void testNotOrientationRover() {
+        assertThrows(RuntimeException.class, () -> roverService.getRover("1 2 A"));
+    }
+
+    @Test
+    public void testNegativeRover() {
+        assertThrows(RuntimeException.class, () -> roverService.getRover("-1 2 N"));
+    }
+
+    @Test
+    public void testValidRover() {
+        val rover = roverService.getRover("1 2 N");
+
+        assertEquals(1, rover.getPosX());
+        assertEquals(2, rover.getPosY());
+        assertEquals(RoverEntity.Orientation.N, rover.getOrientation());
     }
 }
