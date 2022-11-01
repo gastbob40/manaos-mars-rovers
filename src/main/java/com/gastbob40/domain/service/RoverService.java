@@ -15,9 +15,6 @@ import static com.gastbob40.utils.Seq.seq;
 
 @ApplicationScoped
 public class RoverService {
-    /**
-     * 5 5 1 2 N LMLMLMLMM 3 3 E MMRMMRMRRM
-     */
     public String simulate(String input) {
         if (input == null || input.length() == 0) {
             throw new BadRequestException("Input is empty");
@@ -31,13 +28,18 @@ public class RoverService {
 
         Assertions.assertEquals(lines.size() % 2, 0).orElseThrow(BadRequestException::new); // 2 lines per rover
 
+        val response = new StringBuilder();
+
         while (lines.size() > 0) {
             val rover = getRover(lines.get(0));
             val commands = getCommands(lines.get(1));
+
+            response.append(rover.simulate(board, commands)).append(System.lineSeparator());
+
             lines = lines.subList(2, lines.size());
         }
 
-        return null;
+        return response.toString();
     }
 
     public BoardEntity getBoard(String line) {
