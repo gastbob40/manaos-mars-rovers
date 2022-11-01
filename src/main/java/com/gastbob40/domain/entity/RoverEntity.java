@@ -1,13 +1,14 @@
 package com.gastbob40.domain.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Value;
 import lombok.With;
 import lombok.val;
 
 import java.util.List;
 
-@With @AllArgsConstructor
+@With @AllArgsConstructor @Getter
 public class RoverEntity {
     int posX;
     int posY;
