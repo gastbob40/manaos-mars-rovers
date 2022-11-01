@@ -31,6 +31,10 @@ public class RoverService {
         val board = Arrays.asList(line.split(" "));
         Assertions.assertThat(board.size() == 2).orElseThrow(BadRequestException::new);
 
-        return new BoardEntity(Integer.parseInt(board.get(0)), Integer.parseInt(board.get(1)));
+        try {
+            return new BoardEntity(Integer.parseInt(board.get(0)), Integer.parseInt(board.get(1)));
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("Invalid board size");
+        }
     }
 }
