@@ -5,8 +5,8 @@ import lombok.With;
 
 @Value @With
 public class RoverEntity {
-    String posX;
-    String posY;
+    int posX;
+    int posY;
     Orientation orientation;
 
     public enum Orientation {

@@ -1,6 +1,7 @@
 package com.gastbob40.domain.service;
 
 import com.gastbob40.domain.entity.BoardEntity;
+import com.gastbob40.domain.entity.RoverEntity;
 import com.gastbob40.utils.Assertions;
 import lombok.val;
 
@@ -18,10 +19,20 @@ public class RoverService {
             throw new BadRequestException("Input is empty");
         }
 
-        val lines = Arrays.asList(input.split(System.lineSeparator()));
+        var lines = Arrays.asList(input.split(System.lineSeparator()));
         Assertions.assertNotEmpty(lines).orElseThrow(BadRequestException::new);
 
-        getBoard(lines.get(0));
+        val board = getBoard(lines.get(0));
+        lines = lines.subList(1, lines.size());
+
+        Assertions.assertEquals(lines.size() % 2, 0).orElseThrow(BadRequestException::new); // 2 lines per rover
+
+        while (lines.size() > 0) {
+            val rover = getRover(lines.get(0));
+            val commands = lines.get(1);
+            lines = lines.subList(2, lines.size());
+        }
+
         return null;
     }
 
@@ -41,6 +52,27 @@ public class RoverService {
             return new BoardEntity(width, height);
         } catch (NumberFormatException e) {
             throw new BadRequestException("Invalid board size");
+        }
+    }
+
+    // 1 2 N
+    public RoverEntity getRover(String line) {
+        Assertions.assertNotNull(line).orElseThrow(BadRequestException::new);
+
+        val parts = Arrays.asList(line.split(" "));
+        Assertions.assertThat(parts.size() == 3).orElseThrow(BadRequestException::new);
+
+        try {
+            val x = Integer.parseInt(parts.get(0));
+            val y = Integer.parseInt(parts.get(1));
+            val orientation = RoverEntity.Orientation.valueOf(parts.get(2));
+
+            Assertions.assertThat(x >= 0).orElseThrow(BadRequestException::new);
+            Assertions.assertThat(y >= 0).orElseThrow(BadRequestException::new);
+
+            return new RoverEntity(x, y, orientation);
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Invalid rover position or orientation");
         }
     }
 }
