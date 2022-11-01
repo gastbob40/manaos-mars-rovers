@@ -51,7 +51,7 @@ public class RoverService {
         Assertions.assertNotNull(line).orElseThrow(BadRequestException::new);
 
         val board = Arrays.asList(line.split(" "));
-        Assertions.assertThat(board.size() == 2).orElseThrow(BadRequestException::new);
+        Assertions.assertEquals(board.size(), 2).orElseThrow(BadRequestException::new);
 
         try {
             val width = Integer.parseInt(board.get(0));

@@ -216,25 +216,17 @@ public enum Assertions {
             return validationFunction.apply(value) ? value : supplier.get();
         }
 
-        public @NotNull ASSERT_T orElseThrow(final @NotNull Function<Object[], ? extends Exception> exceptionSupplier, Object... parameters) {
+        public @NotNull @SneakyThrows ASSERT_T orElseThrow(final @NotNull Function<Object[], ? extends Exception> exceptionSupplier, Object... parameters) {
             if (!validationFunction.apply(value)) {
-                try {
-                    throw exceptionSupplier.apply(parameters);
-                } catch (Exception e) {
-                    throw new RuntimeException(e.getMessage(), e);
-                }
+                throw exceptionSupplier.apply(parameters);
             }
 
             return value;
         }
 
-        public @NotNull ASSERT_T orElseThrow(final @NotNull Supplier<? extends Exception> exceptionSupplier) {
+        public @NotNull @SneakyThrows ASSERT_T orElseThrow(final @NotNull Supplier<? extends Exception> exceptionSupplier) {
             if (!validationFunction.apply(value)) {
-                try {
-                    throw exceptionSupplier.get();
-                } catch (Exception e) {
-                    throw new RuntimeException(e.getMessage(), e);
-                }
+                throw exceptionSupplier.get();
             }
 
             return value;

@@ -24,9 +24,7 @@ public class RoverEntity {
                 case M -> move();
             }
 
-            if (!board.isInside(posX, posY)) {
-                throw new BadRequestException("Rover is outside the board");
-            }
+            Assertions.assertThat(board.isInside(posX, posY)).orElseThrow(() -> new BadRequestException("Rover is out of the board"));
         }
 
         return String.format("%d %d %s", posX, posY, orientation);

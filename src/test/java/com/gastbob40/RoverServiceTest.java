@@ -8,6 +8,7 @@ import lombok.val;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import javax.ws.rs.BadRequestException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,27 +19,27 @@ public class RoverServiceTest {
 
     @Test
     public void testBoardNull() {
-        assertThrows(RuntimeException.class, () -> roverService.getBoard(null));
+        assertThrows(BadRequestException.class, () -> roverService.getBoard(null));
     }
 
     @Test
     public void testMalformedBoard() {
-        assertThrows(RuntimeException.class, () -> roverService.getBoard("55"));
+        assertThrows(BadRequestException.class, () -> roverService.getBoard("55"));
     }
 
     @Test
     public void testNotNumberBoard() {
-        assertThrows(RuntimeException.class, () -> roverService.getBoard("55 A"));
+        assertThrows(BadRequestException.class, () -> roverService.getBoard("55 A"));
     }
 
     @Test
     public void testNegativeBoard() {
-        assertThrows(RuntimeException.class, () -> roverService.getBoard("-1 5"));
+        assertThrows(BadRequestException.class, () -> roverService.getBoard("-1 5"));
     }
 
     @Test
     public void testZeroBoard() {
-        assertThrows(RuntimeException.class, () -> roverService.getBoard("0 5"));
+        assertThrows(BadRequestException.class, () -> roverService.getBoard("0 5"));
     }
 
     @Test
@@ -51,27 +52,27 @@ public class RoverServiceTest {
 
     @Test
     public void testRoverNull() {
-        assertThrows(RuntimeException.class, () -> roverService.getRover(null));
+        assertThrows(BadRequestException.class, () -> roverService.getRover(null));
     }
 
     @Test
     public void testMalformedRover() {
-        assertThrows(RuntimeException.class, () -> roverService.getRover("1 2"));
+        assertThrows(BadRequestException.class, () -> roverService.getRover("1 2"));
     }
 
     @Test
     public void testNotNumberRover() {
-        assertThrows(RuntimeException.class, () -> roverService.getRover("1 A N"));
+        assertThrows(BadRequestException.class, () -> roverService.getRover("1 A N"));
     }
 
     @Test
     public void testNotOrientationRover() {
-        assertThrows(RuntimeException.class, () -> roverService.getRover("1 2 A"));
+        assertThrows(BadRequestException.class, () -> roverService.getRover("1 2 A"));
     }
 
     @Test
     public void testNegativeRover() {
-        assertThrows(RuntimeException.class, () -> roverService.getRover("-1 2 N"));
+        assertThrows(BadRequestException.class, () -> roverService.getRover("-1 2 N"));
     }
 
     @Test
@@ -85,17 +86,17 @@ public class RoverServiceTest {
 
     @Test
     public void testCommandsNull() {
-        assertThrows(RuntimeException.class, () -> roverService.getCommands(null));
+        assertThrows(BadRequestException.class, () -> roverService.getCommands(null));
     }
 
     @Test
     public void testMalformedCommands() {
-        assertThrows(RuntimeException.class, () -> roverService.getCommands("LMRA"));
+        assertThrows(BadRequestException.class, () -> roverService.getCommands("LMRA"));
     }
 
     @Test
     public void testNotCommandCommands() {
-        assertThrows(RuntimeException.class, () -> roverService.getCommands("L M R"));
+        assertThrows(BadRequestException.class, () -> roverService.getCommands("L M R"));
     }
 
     @Test void testValidCommands() {
